@@ -31,7 +31,7 @@ class Agent:
 
 	def take_action(self, env):
 		# we will use the epsilon greedy strategy to choose an action
-		r = np.random.randn()
+		r = np.random.rand()
 		best_state = None
 		if r < self.eps:
 			#take random action
@@ -131,10 +131,7 @@ class Environment:
 		if not self.game_over():
 			return 0
 
-		if self.winner == sym:
-			return 1
-		else:
-			return 0
+		return 1 if self.winner == sym else 0
 
 	def get_state(self):
 		#returns the current state, represented as an int, from 0 to [S-1]
@@ -151,8 +148,8 @@ class Environment:
 					v = 1
 				elif self.board[i,j] == self.o:
 					v = 2
-					h += (3**k) * v
-					k +=1
+				h += (3**k) * v
+				k +=1
 		return h
 
 	def game_over(self, force_recalculate= False):
@@ -297,14 +294,14 @@ def initalV_o(env,state_winner_triples):
 	V = np.zeros(env.num_states)
 	for state, winner, ended in state_winner_triples:
 		if ended:
-			if winner == env.x:
+			if winner == env.o:
 				v = 1
 			else:
 				v = 0
 		else:
 			v = 0.5
 		V[state] = v
-		return V
+	return V
 
 def play_game(p1,p2,env,draw=False):
 	#put draw =1 to draw map for first player and 2 for second, o/w None
@@ -365,9 +362,9 @@ if __name__ == '__main__':
 
 	print("Training Started")
 	#Train the agents against eachother
-	T = 20000
+	T = 10000
 	for t in range(T):
-		if t % 2000 == 0:
+		if t % 200 == 0:
 			print(t)
 		play_game(p1,p2,Environment())
 
