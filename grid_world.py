@@ -70,7 +70,7 @@ class Grid: #Environment
 		either a position that has possible next actions
 		or a position that yeilds a reward
 		'''
-		return set(self.actions.keys() + self.rewards.keys())
+		return set(list(self.actions.keys()) + list(self.rewards.keys()))
 
 
 def standard_grid():
@@ -85,7 +85,7 @@ def standard_grid():
 	. x . -1
 	s . .  .
 	'''
-	grid = Grid(3,4,(2,0))
+	g = Grid(3,4,(2,0))
 	rewards = {(0,3):1, (1,3):-1}
 	actions = {
 				(0,0): ('D','R'),
