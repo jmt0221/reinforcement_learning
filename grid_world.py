@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 #class Agent():
 	#pass
@@ -32,8 +30,8 @@ class Grid: #Environment
 		return (self.i,self.j)
 
 	def is_terminal(self,s):
-		if s not in self.actions:
-			return s
+		return s not in self.actions
+
 	def move(self,action):
 		#check if a legal move first
 		if action in self.actions[self.i,self.j]:

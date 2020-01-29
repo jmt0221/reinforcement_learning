@@ -1,6 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from grid_world import standard_grid
+
 
 SMALL_ENOUGH = 10e-4 #threshold for convergence
 
@@ -98,7 +98,7 @@ if __name__ == '__main__':
 		V[s] = 0
 
 	#lets see how V(S) changes as we get further away from the reward
-	gamma = 0.9 # discount factor
+	gamma = .9 # discount factor
 
 	#repeat until convergence
 	while True:
@@ -108,15 +108,13 @@ if __name__ == '__main__':
 
 
 			#V(s) only has value if its not a terminal state
-			if s in grid.actions:
+			if s in policy:
 
-				new_v = 0 # we will accumulate the answer
-				p_a = 1.0/len(grid.actions[s]) #each actions has equal prob since uniform
-				for a in grid.actions[s]:
-					grid.set_state(s)
-					r = grid.move(a)
-					new_v += p_a * (r + gamma*V[grid.current_state()])
-				V[s] = new_v
+				a = policy[s]
+				grid.set_state(s)
+				r = grid.move(a)
+				V[s] = r + gamma*V[grid.current_state()]
+				
 				biggest_change = max(biggest_change, np.abs(old_v - V[s]))
 		if biggest_change < SMALL_ENOUGH:
 			break
