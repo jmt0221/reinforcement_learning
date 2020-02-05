@@ -45,7 +45,6 @@ def play_game(grid, policy):
         else:
             a = policy[s]
             states_actions_rewards.append((s,a,r))
-            print(s)
 
     # calculate the returns by working backwards from the terminal state
     G = 0
