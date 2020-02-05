@@ -31,20 +31,31 @@ def play_game(grid, policy):
     #each triple is s(t), a(t), r(t)
     #but r(t) results from taking action a(t-1) from s(t-1) and landing in s(t)
     states_actions_rewards = [(s,a,0)]
+    seen_states = set()
+    seen_states.add(grid.current_state())
+    num_steps = 0
     while True:
-        old_s = grid.current_state()
         r = grid.move(a)
+        num_steps += 1
         s = grid.current_state()
-        if old_s == s:
-            #hack so we dont stay in the same place
-            states_actions_rewards.append((s,None,-100))
+
+        if s in seen_states:
+            # hack so that we don't end up in an infinitely long episode
+            # bumping into the wall repeatedly
+            # if num_steps == 1 -> bumped into a wall and haven't moved anywhere
+            #   reward = -10
+            # else:
+            #   reward = falls off by 1 / num_steps
+            reward = -10. / num_steps
+            states_actions_rewards.append((s, None, reward))
             break
         elif grid.game_over():
-            states_actions_rewards.append((s,None,r))
+            states_actions_rewards.append((s, None, r))
             break
         else:
             a = policy[s]
-            states_actions_rewards.append((s,a,r))
+            states_actions_rewards.append((s, a, r))
+        seen_states.add(s)
 
     # calculate the returns by working backwards from the terminal state
     G = 0
@@ -102,12 +113,12 @@ if __name__ == '__main__':
             pass
     #repeart until convergence
     deltas = []
-    for t in range(2000):
-        if t % 10 == 0:
+    for t in range(10000):
+        if t % 1000 == 0:
             print(t)
         #generate an episoe using pi
         biggest_change = 0
-        state_action_returns = play_game(grid,policy)
+        state_action_returns = play_game(grid, policy)
         seen_state_action_pairs = set()
         for s, a, G in state_action_returns:
             #check if we have already seen
@@ -121,6 +132,7 @@ if __name__ == '__main__':
                 seen_state_action_pairs.add(sa)
         #only record deltas for debugging purposes
         deltas.append(biggest_change)
+        print(policy)
 
         #update policy
         for s in policy.keys():
