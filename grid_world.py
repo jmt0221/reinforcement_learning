@@ -1,10 +1,5 @@
 import numpy as np
 
-#class Agent():
-	#pass
-
-
-
 
 class Grid: #Environment
 	def __init__(self,width,height,start):
@@ -15,14 +10,16 @@ class Grid: #Environment
 
 	def set(self,rewards, actions):
 		'''
-		rewards should be a dict of:  (i,j):r --> (row,col):reward
-		actions should be a dict of:  (i,j):A --> (row,col):list of possible actions
+		rewards --> dict: (row,col):reward
+		actions --> dict: (row,col): list of actions
 		'''
 		self.rewards = rewards
 		self.actions = actions
 
 	def set_state(self,s):
-		#used to reset the start
+		'''
+		s --> tuple: (int,int)
+		'''
 		self.i = s[0]
 		self.j = s[1]
 
@@ -32,8 +29,13 @@ class Grid: #Environment
 	def is_terminal(self,s):
 		return s not in self.actions
 
+	def game_over(self):
+		return (self.i, self.j) not in self.actions
+
 	def move(self,action):
-		#check if a legal move first
+		'''
+		checks if a action is possible, then moves in that direction
+		'''
 		if action in self.actions[self.i,self.j]:
 			if action == 'U':
 				self.i -= 1
@@ -45,6 +47,13 @@ class Grid: #Environment
 				self.j -= 1
 		#return reward if any
 		return self.rewards.get((self.i,self.j),0)
+
+	def all_states(self):
+		'''
+		gives us a set of all possible states in grid world
+		'''
+		return set(list(self.actions.keys()) + list(self.rewards.keys()))
+
 
 	def undo_move(self, action):
 		#opposite of what the above move function does
@@ -59,46 +68,24 @@ class Grid: #Environment
 	#raise an exception if we arrive somewhere we shouldnt
 		assert(self.current_state() in self.all_states())
 
-	def game_over(self):
-		return (self.i, self.j) not in self.actions
 
-	def all_states(self):
-		'''
-		possibly buggy but simple way to get all the states
-		either a position that has possible next actions
-		or a position that yeilds a reward
-		'''
-		return set(list(self.actions.keys()) + list(self.rewards.keys()))
-
-
-def standard_grid():
-	'''
-	define a grid that describes the reward for arriving at each state
-	and possible actions at each state
-	x means you can go there
-	s means start position
-	number means reward at that state
-	the grid looks like this:
-	. . .  1
-	. x . -1
-	s . .  .
-	'''
-	g = Grid(3,4,(2,0))
-	rewards = {(0,3):1, (1,3):-1}
+def grid():
+	grd = Grid(3, 4, (2, 0))
+	rewards = {(0, 3): 1, (1, 3): -1}
 	actions = {
-				(0,0): ('D','R'),
-				(0,1): ('L','R'),
-				(0,2): ('L','D','R'),
-				(1,0): ('U','D'),
-				(1,2): ('U','D','R'),
-				(2,0): ('U','R'),
-				(2,1): ('L','R'),
-				(2,2): ('L','R','U'),
-				(2,3): ('L','U')
+				(0, 0): ('D', 'R'),
+				(0, 1): ('L', 'R'),
+				(0, 2): ('L', 'D', 'R'),
+				(1, 0): ('U', 'D'),
+				(1, 2): ('U', 'D', 'R'),
+				(2, 0): ('U', 'R'),
+				(2, 1): ('L', 'R'),
+				(2, 2): ('L', 'R', 'U'),
+				(2, 3): ('L', 'U')
 			}
 
-	g.set(rewards,actions)
-	return g
+	g.set(rewards, actions)
+	return grd
 
 def negative_grid(step_cost=-0.1):
 	'''
@@ -119,8 +106,7 @@ def negative_grid(step_cost=-0.1):
 	return g
 
 
-def play_game(agent,env):
-	pass
+
 
 
 
