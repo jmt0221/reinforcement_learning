@@ -1,5 +1,5 @@
 import numpy as np
-from grid_world import standard_grid
+from grid_world import grid
 
 
 SMALL_ENOUGH = 10e-4 #threshold for convergence
@@ -40,7 +40,7 @@ if __name__ == '__main__':
 	#we are only modeling p(a|s) = uniform
 	#how would the code change if p(s',r|s,a) is not deterministic
 
-	grid = standard_grid()
+	grid = grid()
 
 	#states will be positions (i,j)
 	states = grid.all_states()

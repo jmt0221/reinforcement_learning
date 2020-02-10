@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from grid_world import standard_grid, negative_grid
+from grid_world import grid, negative_grid
 from iterative_policy_evaluation import print_values, print_policy
 
 SMALL_ENOUGH = 1e-4

@@ -84,14 +84,14 @@ def grid():
 				(2, 3): ('L', 'U')
 			}
 
-	g.set(rewards, actions)
+	grd.set(rewards, actions)
 	return grd
 
 def negative_grid(step_cost=-0.1):
 	'''
 	add a step cost to penalize how much it moves
 	'''
-	g = standard_grid()
+	g = grid()
 	g.rewards.update({
 					(0,0):step_cost,
 					(0,1):step_cost,
