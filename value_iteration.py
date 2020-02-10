@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 from grid_world import grid, negative_grid
 from iterative_policy_evaluation import print_values, print_policy
 
-SMALL_ENOUGH = 1e-4
+thresh = 1e-4
 GAMMA = 0.9
-ALL_POSSIBLE_ACTIONS = ('U','D','L','R')
+ACTIONS = ('U','D','L','R')
 
 
 #this is determinist
@@ -16,7 +16,7 @@ ALL_POSSIBLE_ACTIONS = ('U','D','L','R')
 if __name__ == '__main__':
 
     #we use the negative grid so we can make the agent as efficient as possible
-    grid = negative_grid()
+    grid = grid()
 
 
     #print rewards
