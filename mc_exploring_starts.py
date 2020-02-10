@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from grid_world import standard_grid, negative_grid
+from grid_world import grid, negative_grid
 from iterative_policy_evaluation import print_policy, print_values
 
 GAMMA = 0.9
@@ -30,7 +30,7 @@ def play_game(grid, policy):
     #be aware of timing
     #each triple is s(t), a(t), r(t)
     #but r(t) results from taking action a(t-1) from s(t-1) and landing in s(t)
-    states_actions_rewards = [(s,a,0)]
+    states_actions_rewards = [(s, a, 0)]
     seen_states = set()
     seen_states.add(grid.current_state())
     num_steps = 0
@@ -113,7 +113,7 @@ if __name__ == '__main__':
             pass
     #repeart until convergence
     deltas = []
-    for t in range(10000):
+    for t in range(2000):
         if t % 1000 == 0:
             print(t)
         #generate an episoe using pi
@@ -132,7 +132,6 @@ if __name__ == '__main__':
                 seen_state_action_pairs.add(sa)
         #only record deltas for debugging purposes
         deltas.append(biggest_change)
-        print(policy)
 
         #update policy
         for s in policy.keys():
@@ -142,14 +141,14 @@ if __name__ == '__main__':
     plt.show()
 
     print('final policy')
-    print_policy(policy,grid)
-
+    print_policy(policy, grid)
+    print(Q)
     #find V
     V = {}
     for s, Qs in Q.items():
         V[s] = max_dict(Q[s])[1]
 
     print('final values')
-    print_values(V,grid)
+    print_values(V, grid)
 
 

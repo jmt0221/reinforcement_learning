@@ -1,5 +1,5 @@
 import numpy as np
-from grid_world import standard_grid, negative_grid
+from grid_world import grid, negative_grid
 from iterative_policy_evaluation import print_values, print_policy
 
 SMALL_ENOUGH = 10e-4
@@ -65,7 +65,7 @@ def play_game(grid,policy):
 
 if __name__ == '__main__':
     #use either standard if you want to compare to iterative policy evaluation
-    grid = standard_grid()
+    grid = grid()
 
     #print rewards
     print('rewards')
